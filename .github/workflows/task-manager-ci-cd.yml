@@ -1,0 +1,42 @@
+name: Task Manager CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  check-project:
+    name: Check Task Manager files
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check required project files
+        run: |
+          test -f index.html
+          test -f style.css
+          test -f script.js
+          echo "All Task Manager files are present."
+
+      - name: Verify required repository secrets exist
+        env:
+          PROJECT_NAME: ${{ secrets.PROJECT_NAME }}
+          DEPLOYMENT_ENV: ${{ secrets.DEPLOYMENT_ENV }}
+        run: |
+          if [ -z "$PROJECT_NAME" ]; then
+            echo "Missing repository secret: PROJECT_NAME"
+            exit 1
+          fi
+
+          if [ -z "$DEPLOYMENT_ENV" ]; then
+            echo "Missing repository secret: DEPLOYMENT_ENV"
+            exit 1
+          fi
+
+          echo "Required repository secrets are configured."
+          echo "Secret values are not displayed."
