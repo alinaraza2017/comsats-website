@@ -72,4 +72,4 @@ deploy:
     - rm -f ~/.ssh/id_deploy
   environment:
     name: production
-    url: https://$SITE_NAME.comsats.shakir.blog
+    url: https://alinaraza.comsats.shakir.blog
